@@ -5,7 +5,7 @@
   "private": true,
   "dependencies": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d buld",
+    "deploy": "gh-pages -d build",
     "@emailjs/browser": "^3.10.0",
     "@googlemaps/react-wrapper": "^1.1.35",
     "@react-google-maps/api": "^2.18.1",
