@@ -1,0 +1,40 @@
+{
+  "files": {
+    "main.css": "/proyecto-restaurant/static/css/main.a0eb621f.css",
+    "main.js": "/proyecto-restaurant/static/js/main.b57555c3.js",
+    "static/media/4.jpg": "/proyecto-restaurant/static/media/4.7b625f14b2493ad9ffc2.jpg",
+    "static/media/restaurante01.jpg": "/proyecto-restaurant/static/media/restaurante01.fe86254e5ea2e0810d3d.jpg",
+    "static/media/3.jpg": "/proyecto-restaurant/static/media/3.8226ba4d74993e69c514.jpg",
+    "static/media/carrusel01.jpg": "/proyecto-restaurant/static/media/carrusel01.7e441e194825ab7cc9d8.jpg",
+    "static/media/especialidad5.jpg": "/proyecto-restaurant/static/media/especialidad5.46e29cd42bb28eb4888e.jpg",
+    "static/media/especialidad4.jpg": "/proyecto-restaurant/static/media/especialidad4.13364dc06a921f37a203.jpg",
+    "static/media/especialidad3.jpg": "/proyecto-restaurant/static/media/especialidad3.caa216baaadf2fed674b.jpg",
+    "static/media/especialidad6.jpg": "/proyecto-restaurant/static/media/especialidad6.b6377819bff74b2dbb74.jpg",
+    "static/media/1.jpg": "/proyecto-restaurant/static/media/1.3fc2b2a2979af5e591b8.jpg",
+    "static/media/5.jpg": "/proyecto-restaurant/static/media/5.fab71bfaa2df40806cb8.jpg",
+    "static/media/10.jpg": "/proyecto-restaurant/static/media/10.cc7430f8b82ea03cdcff.jpg",
+    "static/media/8.jpg": "/proyecto-restaurant/static/media/8.c334086611b912245786.jpg",
+    "static/media/especialidad1.jpg": "/proyecto-restaurant/static/media/especialidad1.30f45c96f9e8515970a2.jpg",
+    "static/media/7.jpg": "/proyecto-restaurant/static/media/7.49728ab597c0f82d108b.jpg",
+    "static/media/ensaladas.jpg": "/proyecto-restaurant/static/media/ensaladas.4b077612442c0e1b0879.jpg",
+    "static/media/9.jpg": "/proyecto-restaurant/static/media/9.1ee649063cdc8bc9d264.jpg",
+    "static/media/comidas.jpg": "/proyecto-restaurant/static/media/comidas.c08f6e53949014164f40.jpg",
+    "static/media/12.jpg": "/proyecto-restaurant/static/media/12.50acbeee708d03ca72da.jpg",
+    "static/media/11.jpg": "/proyecto-restaurant/static/media/11.80738fb3ad0b8d2f9b2b.jpg",
+    "static/media/6.jpg": "/proyecto-restaurant/static/media/6.25240fc78a9fa787bbc8.jpg",
+    "static/media/zumos.jpg": "/proyecto-restaurant/static/media/zumos.9a35b9bb42e5eb047431.jpg",
+    "static/media/especialidad2.jpg": "/proyecto-restaurant/static/media/especialidad2.ff2ad9b8b259cf746072.jpg",
+    "static/media/montaditos.jpg": "/proyecto-restaurant/static/media/montaditos.b51e151ed381df040842.jpg",
+    "static/media/cafe.jpg": "/proyecto-restaurant/static/media/cafe.101a50e017a489e7e390.jpg",
+    "static/media/vino.jpg": "/proyecto-restaurant/static/media/vino.8b3fc40e52cc4c8e3a53.jpg",
+    "static/media/refresco.jpg": "/proyecto-restaurant/static/media/refresco.dfdc79e10cdadeb39784.jpg",
+    "static/media/2.jpg": "/proyecto-restaurant/static/media/2.ba28b74c3bd0f38cc732.jpg",
+    "index.html": "/proyecto-restaurant/index.html",
+    "main.a0eb621f.css.map": "/proyecto-restaurant/static/css/main.a0eb621f.css.map",
+    "main.b57555c3.js.map": "/proyecto-restaurant/static/js/main.b57555c3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a0eb621f.css",
+    "static/js/main.b57555c3.js"
+  ]
+}
