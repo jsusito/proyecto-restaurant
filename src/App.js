@@ -2,7 +2,7 @@ import './App.css';
 import Footer from './components/fragments/Footer';
 import Nav from './components/fragments/Nav';
 import PagRestaurante from './web/PagRestaurante';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 import Reserva from './web/Reserva';
 import Carta from './web/Carta';
 import { Especialidades } from './web/Especialidades';
@@ -13,7 +13,7 @@ function App() {
   
   return (
       
-    <BrowserRouter>
+    <HashRouter>
         <Nav></Nav>
             <Routes>
               <Route path="/" element={<PagRestaurante></PagRestaurante>}> </Route>
@@ -24,7 +24,7 @@ function App() {
             </Routes>
         <Footer></Footer>
         <Cookies ></Cookies>
-    </BrowserRouter>
+    </HashRouter>
      
   );
 }
