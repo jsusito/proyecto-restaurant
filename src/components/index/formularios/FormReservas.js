@@ -91,7 +91,7 @@ export function FormReservas(){
         const form = useRef();
         const sendEmail = (e) => {
             e.preventDefault();
-            emailJS.sendForm('service_your_number', 'template_your_number', form.current, 'your number')
+            emailJS.sendForm('service_t9kpq9j', 'template_cztccwg', form.current, 'UohhMdM_4_xf3jYXZ')
             
             .then(()=>{
                 setReservaCompleta(true);
