@@ -320,3 +320,27 @@ input, select{
 .btn-cookies{
   width: 98vh;
 }
+
+.error-autentificacion{
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  z-index: 30;
+  background-color: red;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  animation: slideUp 3s forwards;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(-100%);
+    opacity: 0.2;
+  }
+}

@@ -10,6 +10,7 @@ function Nav(props){
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [authenticate, setauthenticate] = useState();
+  const [failRequestAuthenticate, setFailRequestAuthenticate] = useState(false);
     
   //Verifica si hay guardado algún token valido en el registro de las cookies.
   useEffect(()=>{
@@ -40,8 +41,15 @@ function Nav(props){
       .then((token) => {
         if (requestToken.loggedIn) {
           setauthenticate(true);
+          setFailRequestAuthenticate(false)
         } else {
-          console.log("No se pudo autenticar al usuario.");
+          setFailRequestAuthenticate(true)
+          console.log("No se pudo autenticar al usuario." + requestToken.statuscode);
+          
+          // mostramos el mensaje 5 segundos
+          setTimeout(() => {
+            setFailRequestAuthenticate(false)
+          }, 5000);
         }});
   };
   
@@ -131,7 +139,15 @@ function Nav(props){
                 }
               </ul>
               <Link className="nav-link btn-reserva" to={"reserva"}>reserva</Link>
-             
+               
+               {/* En caso de error en la autentificacion mostramos el mensaje*/}
+               {failRequestAuthenticate &&
+        <div className="position-absolute top-1 end-0 mt-2 me-2">
+          <div className="alert alert-danger error-autentificacion" role="alert">
+            Credenciales no válidos
+          </div>
+        </div>
+      }
             </div>
           </div>
         </nav>  

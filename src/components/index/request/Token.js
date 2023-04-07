@@ -3,6 +3,7 @@ export class Token{
     password;
     token;
     loggedIn;
+    statuscode;
 
     constructor(user, password){
         this.user = user;
@@ -24,7 +25,9 @@ export class Token{
             },
             body: JSON.stringify(bodyLogin)
         })
-        .then(response => response.json())
+        .then(response => {
+            this.statuscode = response.status;
+            return response.json()})
         .then(response => {
             document.cookie = `token=${response.token};max-age=${timeExpiredToken};samesite=strict`;
             document.cookie = `user=${this.user};max-age=${timeExpiredToken};samesite=strict`;
@@ -33,7 +36,8 @@ export class Token{
             return response.token;
         })
         .catch(error => {
-            console.error(error)
+            
+            console.error( error )
             this.loggedIn = false;
         });
     }
