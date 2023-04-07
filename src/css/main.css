@@ -8,7 +8,7 @@
 }
 
     
-.btn-menu{
+.btn-menu, .btn-logger{
     min-width: 50px;
     min-height: 30px;
     font-size: 16px;
@@ -16,13 +16,28 @@
     letter-spacing: 1.3px;
     font-weight: 400;
     color: #313133;
+    border-radius: 10px;
 }
+
+
 .btn-menu:hover{
     background-color: #f8e2cf;
 }
 
 .submenu:hover{
   background-color: #dccfc5;
+}
+
+.btn-logger {
+  color: #2323da;
+  font-weight: 600;
+}
+.btn-logger:hover{
+  background-color: #7183e9;
+}
+
+.submenu:logger{
+background-color: #a6c3df;
 }
 
 .regard{
