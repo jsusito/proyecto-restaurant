@@ -1,24 +1,28 @@
+import { Constants } from "../../../utils/Constants";
+
 export class Token{
     user;
     password;
     token;
     loggedIn;
     statuscode;
+    apiLogin
 
     constructor(user, password){
         this.user = user;
         this.password = password;
         this.loggedIn = false;
+        this.apiLogin = new Constants().API_LOGIN;
     }
 
     requestToken(){
-        const timeExpiredToken = 60 * 3; // 3 minutos     
+        const timeExpiredToken = new Constants().TIME_EXPIRED_TOKEN;    
         let bodyLogin = {
             username: this.user,
             password: this.password
         }
 
-        return fetch('http://localhost:8089/login', {
+        return fetch(this.apiLogin, {
             method : 'POST',
             headers:{
                 "Content-Type": "application/json"
@@ -33,11 +37,10 @@ export class Token{
             document.cookie = `user=${this.user};max-age=${timeExpiredToken};samesite=strict`;
             this.token = response.token;
             this.loggedIn = true;
+
             return response.token;
         })
         .catch(error => {
-            
-            console.error( error )
             this.loggedIn = false;
         });
     }

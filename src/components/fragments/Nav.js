@@ -1,29 +1,34 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { CookieMap } from "../index/request/CookieMap";
 import { Token } from "../index/request/Token";
 import { NavDropDown } from "../nav/NavDropDown";
-
+import { NameSesion, TokenSesion, UserSesion } from "../index/authentication/UserSesion";
 
 function Nav(props){
   
-  const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
-  const [authenticate, setauthenticate] = useState();
   const [failRequestAuthenticate, setFailRequestAuthenticate] = useState(false);
-    
+  const [cursorState, setCursorState] = useState('auto'); //se encarga cambiar el cursor a espera en login
+  
+  const [user, setUser] = useContext(NameSesion);
+  const [authenticate, setauthenticate] = useContext(UserSesion); //variables de contexto
+  const [contextToken, setContextToken] = useContext(TokenSesion);
+ 
+ 
   //Verifica si hay guardado algún token valido en el registro de las cookies.
   useEffect(()=>{
-    if(document.cookie.includes("token") && document.cookie.includes("user")){
-      
-      setauthenticate(true);
-      let cookie = new CookieMap(document.cookie);
-      let cookieMap = cookie.getObjectCookie()
-      setUser(cookieMap.user);
-      
+    if(contextToken && user){
+       setauthenticate(true);
     }
   },[])
 
+  //cambiar el puntero del ratón(ocupado) mientras se procesa la solicitud
+  useEffect(() => {
+    document.body.style.cursor = cursorState; 
+  }, [cursorState]);  
+
+  
+  
   //Borra las cookies y desactiva la authenticaficacion 
   const deleteAuthenticate = (()=>{
     setauthenticate(false);
@@ -31,17 +36,20 @@ function Nav(props){
     document.cookie = 'user="";max-age=-1;'
   });
 
-
-
-  const handleFormLogin = (e) => {
+  //Se loguea con el servidor, registra las cookies y activa los elementos nuevos
+  const handleFormLogin = async(e) => {
     e.preventDefault();
+    setCursorState('wait');
+
     let requestToken = new Token(user, password);
     
-    requestToken.requestToken()
+    await requestToken.requestToken()
       .then((token) => {
         if (requestToken.loggedIn) {
           setauthenticate(true);
           setFailRequestAuthenticate(false)
+          setContextToken(requestToken.token);
+        
         } else {
           setFailRequestAuthenticate(true)
           console.log("No se pudo autenticar al usuario." + requestToken.statuscode);
@@ -51,8 +59,9 @@ function Nav(props){
             setFailRequestAuthenticate(false)
           }, 5000);
         }});
+
+    setCursorState('auto');
   };
-  
 
   return( 
       <div>
@@ -93,11 +102,8 @@ function Nav(props){
                   </li>
 
                 }
-                
-                
-              </ul>
-              
-
+             </ul>
+             
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">  
               { !authenticate && 
                   <NavDropDown title="iniciar sesion">
@@ -135,26 +141,25 @@ function Nav(props){
                       
                       </NavDropDown>  
                   </>
-
-                }
+              }
               </ul>
+              
               <Link className="nav-link btn-reserva" to={"reserva"}>reserva</Link>
                
                {/* En caso de error en la autentificacion mostramos el mensaje*/}
                {failRequestAuthenticate &&
-        <div className="position-absolute top-1 end-0 mt-2 me-2">
-          <div className="alert alert-danger error-autentificacion" role="alert">
-            Credenciales no válidos
-          </div>
-        </div>
-      }
+                <div className="position-absolute top-1 end-0 mt-2 me-2">
+                  <div className="alert alert-danger error-autentificacion" role="alert">
+                    Credenciales no válidos
+                  </div>
+                </div>
+              }
+
             </div>
           </div>
         </nav>  
       </div>  
     
   )
-  
 }
-
 export default Nav;
