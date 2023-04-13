@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Token } from "../index/request/Token";
 import { NavDropDown } from "../nav/NavDropDown";
-import { NameSesion, TokenSesion, UserSesion } from "../index/authentication/UserSesion";
+import { NameSesion, TokenSesion, ActiveSesion } from "../index/authentication/UserSesion";
 
 function Nav(props){
   
@@ -11,7 +11,7 @@ function Nav(props){
   const [cursorState, setCursorState] = useState('auto'); //se encarga cambiar el cursor a espera en login
   
   const [user, setUser] = useContext(NameSesion);
-  const [authenticate, setauthenticate] = useContext(UserSesion); //variables de contexto
+  const [authenticate, setauthenticate] = useContext(ActiveSesion); //variables de contexto
   const [contextToken, setContextToken] = useContext(TokenSesion);
  
  

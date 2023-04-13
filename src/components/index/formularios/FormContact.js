@@ -20,26 +20,29 @@ export function FormContact(){
            id:0,
            text: "nombre",
            type: "text",
-           placeholder:"Mayor de cuatro letras",
+           placeholder:"Mayor de cuatro caracteres. Solo letras",
            value:nombre,
-           setValue:setNombre
+           setValue:setNombre,
+           pattern : /^[a-zA-Z ]{4,}$/
                
         },
         {
             id:1,
             text: "apellido",
             type: "text",
-            placeholder:"Mayor de cuatro letras",     
+            placeholder:"Mayor de cuatro caracteres. Solo letras",     
             value:apellido,
+            pattern : /^[a-zA-Z ]{4,}$/,
             setValue:setApellido
         },
         {
             id:2,
             text: "email",
             type: "email",
-            placeholder:"email...",
+            placeholder:"Email válido",
             value:email,
-            setValue:setEmail
+            setValue:setEmail,
+            pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/   
         }
     ]
 
@@ -106,7 +109,8 @@ export function FormContact(){
                                     max ={element.max} 
                                     isDisable={element.isDisable}
                                     placeholder = {element.placeholder} 
-                                    currentValue={element.value} 
+                                    currentValue={element.value}
+                                    pattern={element.pattern} 
                                     onHandleChangue={element.setValue}
                                 />
                                 </div>
@@ -120,7 +124,11 @@ export function FormContact(){
                                     value={valueTextArea}
                                     onChange={event =>(setValueTextArea(event.target.value))}>
                                 </textarea>
+                            <div className="text-primary">
+                                Escribe mínimo una frase
                             </div>
+                            </div>
+                            
                             <div className="col-md-12 mb-5 d-flex justify-content-center align-items-center">
                                 <button  type="submit" className="btn btn-warning w-50" disabled={buttonDisable}>Enviar</button>
                             </div>

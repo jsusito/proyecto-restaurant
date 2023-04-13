@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LabelInput } from "./LabelInput";
 import React, { useRef } from 'react';
 import emailJS from "@emailjs/browser";
@@ -6,27 +6,31 @@ import { SelectForm } from "./SelectForm";
 import { GetTomorrowDate } from "../GetTomorrowDate";
 import { ConfirmSendForm } from "./ConfirmSendForm";
 import { FailSendForm } from "./FailSendForm";
+import { TokenSesion, ActiveSesion, NameSesion } from "../authentication/UserSesion";
+import { Constants } from "../../../utils/Constants";
 
 
 const optionMesa=["1","2","3","4","5","6","7","8"];
 const horaAlmuerzo=["12:00","12:30","13:00","13:30","14:00"]
 const horaCena=["19:00","20:00","21:00","22:00"]
 const optionPersonas=[1,2,3,4,5,6]
+const apiGetUser = new Constants().API_USER;
 
 const labelFor =[
         {
            id:0,
            text: "nombre",
            type: "text",
-           placeholder:"Mayor de cuatro letras",
-           
+           placeholder:"Mayor de 4 caractéres. Solo Letras",
+           pattern : /^[a-zA-Z ]{5,}$/
                
         },
         {
             id:1,
             text: "apellido",
             type: "text",
-            placeholder:"Mayor de cuatro letras",     
+            placeholder:"Tiene que ser mayour de 3 letras",
+            pattern : /^[a-zA-Z ]{3,}$/     
             
         },
         {
@@ -34,19 +38,22 @@ const labelFor =[
             text: "telefono",
             type: "text",
             placeholder:"numero de 9 cifras o mayor",
-               
+            pattern : /^[?+?.0-9 ]{9,}$/   
          },
          {
             id:3,
             text:"fecha",
             type:"date",
+            pattern : /[*]*/
+
             
         },
         {
             id:4,
             text:"email",
             type:"email",
-            placeholder:"Introduzca el email"
+            placeholder:"Introduzca un email válido",
+            pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
         },
         
         
@@ -55,6 +62,11 @@ const labelFor =[
 export function FormReservas(){
         const [buttonDisable, setButtonDisable] = useState(true);
         
+        //Contexto
+        const [authenticate] = useContext(ActiveSesion);
+        const token = useContext(TokenSesion);
+        const [username] = useContext(NameSesion);
+
         //input
         const [nombre, setNombre] = useState("");        
         const [apellido, setApellido] = useState("");        
@@ -86,31 +98,71 @@ export function FormReservas(){
         
         const [reservaCompleta, setReservaCompleta] = useState(false);
         const [falloReserva, setFalloReserva] = useState(false);
-              
-        //Manda el email
         const form = useRef();
+              
+        //Manda el email y guardamos en base de datos la reserva. Verifica el formulario
         const sendEmail = (e) => {
             e.preventDefault();
-            emailJS.sendForm('service_t9kpq9j', 'template_cztccwg', form.current, 'UohhMdM_4_xf3jYXZ')
+                       
+            const dataForm = {
+                "numberPeople": personas,
+                "lunchTable": mesa, 
+                "dinnerTable": mesa,
+                "lunchHour": almuerzo,
+                "dinnerHour": cena,
+                "userUsername": nombre,
+                "dateReservations": date
+            }
+
+            let apiReservation = new Constants().API + "reservation";
             
-            .then(()=>{
-                setReservaCompleta(true);
-                setButtonDisable(true);    
-            })
-            .catch(error =>{
-                console.log(error)
-                setButtonDisable(true);
-                setFalloReserva(true);
-            });
-          };
-        
+            const saveData = () => {
+                
+                return new Promise((resolve, reject) => {
+                  fetch(apiReservation,{
+                    method:"POST",
+                    headers:{
+                      "Authorization": `Bearer ${token}`,    
+                      'Content-type': 'application/json; charset=UTF-8'    
+                    },
+                    body: JSON.stringify(dataForm)
+                  })
+                  .then(response => resolve(response.status))
+                  .catch(error => reject(error));
+                });
+              };
+              
+            const sendEmail = () => {
+                
+                return new Promise((resolve, reject) => {
+                  emailJS.sendForm('service_t9kpq9j', 'template_cztccwg', form.current, 'UohhMdM_4_xf3jYXZ')
+                    .then(response => {
+                        setReservaCompleta(true);
+                        setButtonDisable(true);
+                        resolve(response.status);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        setButtonDisable(true);
+                        setFalloReserva(true);
+                        reject(error);
+                    });
+                });
+            };
+              
+            let notificationResolve =  Promise.all([saveData(), sendEmail()]);
+            notificationResolve
+                .then(response => response.forEach(status => console.log(status)))
+                .catch(error => console.error(error));
+        };  
+          
         
         //Valida el formulario sumamos uno por cada input que se cumple. Almuerzo y cena valen por dos 
         useEffect(()=>{
             let count = 1;
             let disable = true;
             
-            if(nombre.length>3) 
+            if(nombre.length>4) 
                 count++;
             
             if(apellido>3) 
@@ -137,13 +189,32 @@ export function FormReservas(){
 
         },[nombre, apellido, telefono, personas, email, mesa, almuerzo, cena])
              
-
+        let apiUser = apiGetUser + username;
+        
+        
+        useEffect(()=>{
+          if(authenticate)  
+            fetch(apiUser, {
+                headers:{
+                    Authorization: `Bearer ${token}` 
+                }})
+            .then(response => response.json())
+            .then(body=>{
+                setNombre(body['username']);
+                setApellido(body['surname'])
+                setEmail(body['email'])
+                setTelefono(body['telephone'])
+            })
+               
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        },[token])
+        
         return(
         
         <div className="container">    
             <div className="row justify-content-center">    
                 <div className="col-auto">            
-                    <form className="g-3" ref={form} onSubmit={sendEmail}>
+                    <form className="g-3 needs-validation"  ref={form} onSubmit={sendEmail}>
                         <div className="row  justify-content-center">
                             <div className="col-12">
                                 <h6 className="form-reserva text-center mt-2">Haz ahora</h6>
@@ -165,7 +236,8 @@ export function FormReservas(){
                                     max ={element.max} 
                                     isDisable={element.isDisable}
                                     placeholder = {element.placeholder} 
-                                    currentValue={element.value} 
+                                    currentValue={element.value}
+                                    pattern={element.pattern} 
                                     onHandleChangue={element.setValue}
                                 />
                                 </div>  

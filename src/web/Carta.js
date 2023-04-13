@@ -1,19 +1,21 @@
-import {useState} from "react";
-import SeccionCarta from "../components/index/carta/SeccionCarta";
-import { RecetasMontaditos } from "../datos/RecetasMontaditos";
-import { RecetasEnsaladas } from "../datos/RecetasEnsaladas";
-import { RecetasComida } from "../datos/RecetasComida";
-import imgMontaditos from "../images/carta/montaditos.jpg"
-import imgEnsaladas from "../images/carta/ensaladas.jpg"
-import imgComidas from "../images/carta/comidas.jpg"
+import { useContext, useState } from "react";
+import { TokenSesion } from "../components/index/authentication/UserSesion";
 import { ComidaLLevar } from "../components/index/carta/ComidaLLevar";
+import SeccionCarta from "../components/index/carta/SeccionCarta";
 import { FormReservas } from "../components/index/formularios/FormReservas";
+import { RecetasComida } from "../datos/RecetasComida";
+import { RecetasEnsaladas } from "../datos/RecetasEnsaladas";
+import { RecetasMontaditos } from "../datos/RecetasMontaditos";
+import imgComidas from "../images/carta/comidas.jpg";
+import imgEnsaladas from "../images/carta/ensaladas.jpg";
+import imgMontaditos from "../images/carta/montaditos.jpg";
 
 function Carta(){
   const [imagen , setImagen] = useState(imgMontaditos);
   const [imagenEnsalada , setImagenEnsalada] = useState(imgEnsaladas);
   const [imagenComida , setImagenComida] = useState(imgComidas);
   const [showForm, setShowForm] = useState(false);
+  const authenticate = useContext(TokenSesion)
     return(
         <div className="container-fluid background-carta-encabezado ">
             {
@@ -45,7 +47,7 @@ function Carta(){
                     
                     { !showForm && <ComidaLLevar setValue={setShowForm} value={showForm}></ComidaLLevar>}
 
-                    { showForm && <FormReservas></FormReservas>}
+                    { showForm && authenticate  && <FormReservas></FormReservas>}
                 </>    
                 
             }

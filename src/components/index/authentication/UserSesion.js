@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-export const UserSesion = createContext()
-export const TokenSesion = createContext();
-export const NameSesion = createContext();
-export const authenticateHeader = createContext();
+export const ActiveSesion = createContext(null)
+export const TokenSesion = createContext(null);
+export const NameSesion = createContext(null);
+export const authenticateHeader = createContext(null);

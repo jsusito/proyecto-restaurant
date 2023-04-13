@@ -7,6 +7,8 @@ export class Constants{
     MENU3 = "menu 3"
     TODOS = "todos"
     
+    API = "http://localhost:8089/"
+    API_USER = "http://localhost:8089/user/"
     API_IMAGE = "http://localhost:8089/recetas/get-img/"
     API_LOGIN = "http://localhost:8089/login";
     API_RECETAS_ORIENTALES = "http://localhost:8089/recetas/recetas";

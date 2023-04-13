@@ -7,25 +7,16 @@ export function SeccionEspecialidad(props){
     const [imagenUrl, setImagenUrl] = useState("");
 
     useEffect(()=>{
-        
-       
-        async function fetchImage() { 
-            
-            const response = await fetch(props.imagen, {
-                headers:{
-                    Authorization: `Bearer ${tokenSesion}` 
-                }
-            });
-            
-            //Creamos objeto para almacenar la imagen protegida
-            const dataImage = await response.blob();
-            
-            //añadimos objeto al tag de img y de a
-            const imagen = URL.createObjectURL(dataImage);
-            setImagenUrl(imagen);
-        }
-
-        fetchImage();
+      
+        fetch(props.imagen, {
+            headers:{
+                Authorization: `Bearer ${tokenSesion}` 
+            }})
+        .then(response => response.blob())
+        .then(dataImage => {
+            let imagen = URL.createObjectURL(dataImage);
+            setImagenUrl(imagen)
+        })    
 
     },[props.imagen, tokenSesion])
     

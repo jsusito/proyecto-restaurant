@@ -15,33 +15,33 @@
     text-transform: uppercase;
     letter-spacing: 1.3px;
     font-weight: 400;
-    color: #313133;
+    color: #3e3e3e;
     border-radius: 10px;
 }
 
 
 .btn-menu:hover{
-    background-color: #f8e2cf;
+    background-color:  #f9dcd1;
 }
 
 .submenu:hover{
-  background-color: #dccfc5;
+  background-color: #e4bdb4;
 }
 
 .btn-logger {
-  color: #2323da;
+  color: #2c2c9c;
   font-weight: 600;
 }
 .btn-logger:hover{
-  background-color: #7183e9;
+  background-color: #667ae9;
 }
 
 .submenu:logger{
-background-color: #a6c3df;
+background-color: #90bae0;
 }
 
 .regard{
-  background-color: #caa585;
+  background-color: #ca9b72;
   min-height: 50px;
   height: auto;
   text-transform: uppercase;
@@ -56,10 +56,10 @@ background-color: #a6c3df;
 
 @keyframes regard-changue-color{
   from{
-    background-color: #caa585;
+    background-color: #cba17b;
   }
   to{
-    background-color: #a96d3c;
+    background-color: #ad6a33;
   }
 }
 
@@ -137,7 +137,7 @@ background-color: #a6c3df;
 }
 
 .background-carta-encabezado{
-  background-color: #e9e2dc;
+  background-color: #f1d5bd;
 }
 
 
@@ -154,7 +154,7 @@ background-color: #a6c3df;
 .header-Comida-llevar{
   cursor: pointer;
   height:50px;
-  text-decoration: underline rgb(98, 100, 105);
+  text-decoration: underline rgb(77, 79, 85);
 }
 
 
@@ -193,7 +193,7 @@ p.parraf-carta:hover{
 
 
 .container-especialidades{
-  background-color: #cecbca;
+  background-color: #c4b1ab;
   width: 100vw;
   
 }
@@ -264,8 +264,8 @@ form{
     letter-spacing: 1.3px;
     font-weight: 700;
     color: #313133;
-    background: #fbd6b8;
-  background: linear-gradient(90deg, #d0a480 0%, #d0a480 100%);
+    background: #e7c0a0;
+  background: linear-gradient(90deg, #cc9e79 0%, #bc8e67 100%);
     border: none;
     
     box-shadow: 12px 12px 24px #d0a480;
@@ -290,6 +290,13 @@ input, select{
   height: 45px;
   min-width: 250px;
   
+}
+
+.invalid {
+  border-color: red;
+}
+.valid {
+  border-color: blue;
 }
 
 .btn-form{
@@ -344,3 +351,5 @@ input, select{
     opacity: 0.2;
   }
 }
+
+
