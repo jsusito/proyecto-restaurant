@@ -131,9 +131,9 @@ background-color: #90bae0;
 /* estilos para la carta*/
 
 .img-carta{
-  max-width: 495px;
-  min-width: 250px;
-  max-height: 330px;
+  max-width: auto;
+  min-width: auto;
+  max-height: 300px;
 }
 
 .background-carta-encabezado{
@@ -339,6 +339,7 @@ input, select{
   border-radius: 5px;
   animation: slideUp 3s forwards;
 }
+
 
 @keyframes slideUp {
   from {
