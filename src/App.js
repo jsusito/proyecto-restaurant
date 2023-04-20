@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Footer from './components/fragments/Footer';
 import Nav from './components/fragments/Nav';
-import { NameSesion, TokenSesion, ActiveSesion } from './components/index/authentication/UserSesion';
+import { UserContext } from './components/index/authentication/UserSesion';
 import { NewReceta } from './components/index/formularios/NewReceta';
 import { CookieMap } from './components/index/request/CookieMap';
 import { CargarRecetas } from './web/CargarRecetas';
@@ -19,6 +19,20 @@ function App() {
 const [token, setToken] = useState();
 const [authenticate,setAuthenticate] = useState();
 const [nameSesion, setNameSesion] = useState("");
+const userAuthorities = useRef([]);
+
+const userData = {
+  token: token,
+  setToken: setToken,
+  
+  authenticate: authenticate,
+  setAuthenticate: setAuthenticate,
+
+  nameSesion: nameSesion,
+  setNameSesion: setNameSesion,
+
+  authorities: userAuthorities
+}
 
   //Verifica si hay guardado algún token valido en el registro de las cookies.
   useEffect(()=>{
@@ -33,37 +47,29 @@ const [nameSesion, setNameSesion] = useState("");
             
     }
   },[token])
-
+  
   return (
       
-    <HashRouter>
-      
-      
-      <ActiveSesion.Provider value={[authenticate, setAuthenticate]}>
-        <TokenSesion.Provider value={[token, setToken]}>
-         <NameSesion.Provider value={[nameSesion, setNameSesion]}>
-          
-          <Nav></Nav>
-              <Routes>
-                <Route path="/" element={<PagRestaurante></PagRestaurante>}> </Route>
-                <Route path="/reserva" element={<Reserva></Reserva>}> </Route>
-                <Route path="/carta" element={<Carta></Carta>}> </Route>
-                <Route path="/especialidades" element={<Especialidades></Especialidades>}></Route>
-                <Route path="/grupo" element={<Grupo></Grupo>}></Route>
-                
-                { authenticate && 
-                  <Route path="/cargarRecetas" element={<CargarRecetas/>}></Route> }
-                
-                <Route path="/new-receta" element={<NewReceta/>}></Route>
-              </Routes>
-          <Footer></Footer>
-          <Cookies ></Cookies>
-         
-         </NameSesion.Provider> 
-        </TokenSesion.Provider>
-      </ActiveSesion.Provider>
-
-    </HashRouter>
+  <HashRouter>
+    <UserContext.Provider value = {userData}>
+        
+        <Nav></Nav>
+          <Routes>
+            <Route path="/" element={<PagRestaurante></PagRestaurante>}> </Route>
+            <Route path="/reserva" element={<Reserva></Reserva>}> </Route>
+            <Route path="/carta" element={<Carta></Carta>}> </Route>
+            <Route path="/especialidades" element={<Especialidades></Especialidades>}></Route>
+            <Route path="/grupo" element={<Grupo></Grupo>}></Route>
+            
+            { authenticate && <Route path="/cargarRecetas" element={<CargarRecetas/>}></Route> }
+            
+            <Route path="/new-receta" element={<NewReceta/>}></Route>
+          </Routes>
+        <Footer></Footer>
+        <Cookies ></Cookies>
+     
+     </UserContext.Provider>
+  </HashRouter>
      
   );
 }

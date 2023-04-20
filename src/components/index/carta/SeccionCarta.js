@@ -1,8 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function SeccionCarta(props){
 
     const [idShow, setIdShow] = useState();
+    const [windowchange,setWindowSize] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => window.innerWidth < 768 ? setWindowSize(true) : setWindowSize(false);
+        
+        window.addEventListener("resize", handleResize);
+
+        //eliminamos el componente para que no haya problema con este listener después en la memoria
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
     
     return (
             <div className="container ">
@@ -34,7 +47,7 @@ function SeccionCarta(props){
                                     {/* mostramos la imagen cuando la resolucion sea inferior a 600px  justo debajo del nombre de la receta*/}
 
                                     {   idShow===receta.id && window.innerWidth<768 &&
-                                        <div className="col-md-6 mb-3 justify-content-center align-items-center">
+                                        <div className="col-md-6 mb-3 justify-content-center align-items-center" key={receta.map}>
                                         {
                                             // eslint-disable-next-line jsx-a11y/alt-text
                                             <a href={props.valueState}>

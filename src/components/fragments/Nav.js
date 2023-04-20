@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../index/authentication/UserSesion";
 import { Token } from "../index/request/Token";
 import { NavDropDown } from "../nav/NavDropDown";
-import { NameSesion, TokenSesion, ActiveSesion } from "../index/authentication/UserSesion";
 
 function Nav(props){
   
@@ -10,10 +10,10 @@ function Nav(props){
   const [failRequestAuthenticate, setFailRequestAuthenticate] = useState(false);
   const [cursorState, setCursorState] = useState('auto'); //se encarga cambiar el cursor a espera en login
   
-  const [user, setUser] = useContext(NameSesion);
-  const [authenticate, setauthenticate] = useContext(ActiveSesion); //variables de contexto
-  const [contextToken, setContextToken] = useContext(TokenSesion);
- 
+  const  context = useContext(UserContext);
+  const [user, setUser] = [context.nameSesion, context.setNameSesion];
+  const [authenticate, setauthenticate] = [context.authenticate, context.setAuthenticate]
+  const [contextToken, setContextToken] = [context.token, context.setToken];
  
   //Verifica si hay guardado algún token valido en el registro de las cookies.
   useEffect(()=>{
@@ -59,7 +59,8 @@ function Nav(props){
             setFailRequestAuthenticate(false)
           }, 5000);
         }});
-
+    context.authorities.current = requestToken.authorities;
+   
     setCursorState('auto');
   };
 
@@ -136,7 +137,10 @@ function Nav(props){
                       <NavDropDown title={user}>
                       
                         <a className="nav-link active btn-logger" href="#">Mis reservas</a>
-                      
+                        {
+                          context.authorities.current.includes("ADMIN") &&  
+                          <a className="nav-link active btn-logger" href="#">Nuevo Usuario</a>
+                        }
                         <a className="nav-link active btn-logger" href="#" onClick={deleteAuthenticate}>Logout</a>
                       
                       </NavDropDown>  

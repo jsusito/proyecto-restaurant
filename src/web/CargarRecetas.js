@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { ErrorConnection } from "../components/index/ErrorConnection";
 import { Especialidad } from "../components/index/Especialidad";
 import { SeccionEspecialidad } from "../components/index/SeccionEspecialidad";
-import {Constants} from "../utils/Constants"
-import { TokenSesion } from "../components/index/authentication/UserSesion";
+import { UserContext } from "../components/index/authentication/UserSesion";
+import { Constants } from "../utils/Constants";
 
 
 export function CargarRecetas(){
@@ -11,7 +11,9 @@ export function CargarRecetas(){
     const constants = new Constants();
     const [recetaResponse, setRecetaResponse] = useState([]);
     const [showFail, setShowFail] = useState(false)
-    const token = useContext(TokenSesion);
+    
+    let context = useContext(UserContext);
+    const token = context.token;
 
     useEffect(() =>{
         fetch(constants.API_RECETAS_ORIENTALES, {

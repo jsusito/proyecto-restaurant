@@ -6,13 +6,16 @@ export class Token{
     token;
     loggedIn;
     statuscode;
-    apiLogin
+    apiLogin;
+    apiUser;
+    authorities;
 
     constructor(user, password){
         this.user = user;
         this.password = password;
         this.loggedIn = false;
         this.apiLogin = new Constants().API_LOGIN;
+        this.apiUser = new Constants().API_USER;
     }
 
     requestToken(){
@@ -37,11 +40,28 @@ export class Token{
             document.cookie = `user=${this.user};max-age=${timeExpiredToken};samesite=strict`;
             this.token = response.token;
             this.loggedIn = true;
-
-            return response.token;
+            //return response.token;
         })
+        .then(() => this.#getAuthorities())
         .catch(error => {
             this.loggedIn = false;
         });
+    }
+
+    //Pendiente de hacer la solicitud para recuperar las autoridades y guardarlas en el contexto, para enseñar solo una parte si es admin
+    #getAuthorities(){
+         return fetch(this.apiUser + this.user, {
+            headers:{
+                "authorization": `Bearer ${this.token}`
+            }})
+            .then(response => response.json())
+            .then(body => {
+                let roles = [];
+                body.roles.forEach(element => {
+                    roles.push(element)
+                });
+                this.authorities = roles;
+            })
+            .catch(error=> console.error(error))
     }
 }

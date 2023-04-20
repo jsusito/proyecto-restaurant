@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { TokenSesion } from "../components/index/authentication/UserSesion";
+import { UserContext } from "../components/index/authentication/UserSesion";
 import { ComidaLLevar } from "../components/index/carta/ComidaLLevar";
 import SeccionCarta from "../components/index/carta/SeccionCarta";
 import { FormReservas } from "../components/index/formularios/FormReservas";
@@ -15,7 +15,9 @@ function Carta(){
   const [imagenEnsalada , setImagenEnsalada] = useState(imgEnsaladas);
   const [imagenComida , setImagenComida] = useState(imgComidas);
   const [showForm, setShowForm] = useState(false);
-  const authenticate = useContext(TokenSesion)
+  
+  let context = useContext(UserContext);
+  const authenticate = context.token;
     return(
         <div className="container-fluid background-carta-encabezado ">
             {

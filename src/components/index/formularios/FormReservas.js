@@ -1,13 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import { LabelInput } from "./LabelInput";
-import React, { useRef } from 'react';
 import emailJS from "@emailjs/browser";
-import { SelectForm } from "./SelectForm";
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Constants } from "../../../utils/Constants";
 import { GetTomorrowDate } from "../GetTomorrowDate";
+import { UserContext } from "../authentication/UserSesion";
 import { ConfirmSendForm } from "./ConfirmSendForm";
 import { FailSendForm } from "./FailSendForm";
-import { TokenSesion, ActiveSesion, NameSesion } from "../authentication/UserSesion";
-import { Constants } from "../../../utils/Constants";
+import { LabelInput } from "./LabelInput";
+import { SelectForm } from "./SelectForm";
 
 
 const optionMesa=["1","2","3","4","5","6","7","8"];
@@ -63,9 +62,10 @@ export function FormReservas(){
         const [buttonDisable, setButtonDisable] = useState(true);
         
         //Contexto
-        const [authenticate] = useContext(ActiveSesion);
-        const token = useContext(TokenSesion);
-        const [username] = useContext(NameSesion);
+        let context = useContext(UserContext);
+        const authenticate = context.authenticate;
+        const token = context.token
+        const username = context.nameSesion;
 
         //input
         const [nombre, setNombre] = useState("");        

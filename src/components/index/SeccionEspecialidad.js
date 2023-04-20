@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { TokenSesion } from "./authentication/UserSesion";
+import { UserContext } from "./authentication/UserSesion";
 
 export function SeccionEspecialidad(props){
     
-    const tokenSesion = useContext(TokenSesion)
+    let context = useContext(UserContext);
+    const tokenSesion = context.token
     const [imagenUrl, setImagenUrl] = useState("");
 
     useEffect(()=>{
