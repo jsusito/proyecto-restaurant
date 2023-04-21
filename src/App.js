@@ -13,6 +13,7 @@ import { Especialidades } from './web/Especialidades';
 import { Grupo } from './web/Grupo';
 import PagRestaurante from './web/PagRestaurante';
 import Reserva from './web/Reserva';
+import { Reservations } from './components/index/Reservations';
 
 function App() {
     
@@ -62,6 +63,7 @@ const userData = {
             <Route path="/grupo" element={<Grupo></Grupo>}></Route>
             
             { authenticate && <Route path="/cargarRecetas" element={<CargarRecetas/>}></Route> }
+            { authenticate && <Route path="/reservas" element={<Reservations/>}></Route> }
             
             <Route path="/new-receta" element={<NewReceta/>}></Route>
           </Routes>

@@ -59,8 +59,8 @@ function Nav(props){
             setFailRequestAuthenticate(false)
           }, 5000);
         }});
+    
     context.authorities.current = requestToken.authorities;
-   
     setCursorState('auto');
   };
 
@@ -136,12 +136,12 @@ function Nav(props){
                   <>
                       <NavDropDown title={user}>
                       
-                        <a className="nav-link active btn-logger" href="#">Mis reservas</a>
+                        <Link className="nav-link active btn-logger" to="/reservas">Mis reservas</Link>
                         {
                           context.authorities.current.includes("ADMIN") &&  
                           <a className="nav-link active btn-logger" href="#">Nuevo Usuario</a>
                         }
-                        <a className="nav-link active btn-logger" href="#" onClick={deleteAuthenticate}>Logout</a>
+                        <a className="nav-link active btn-logger" href="#" onClick={deleteAuthenticate}>cerrar sesión</a>
                       
                       </NavDropDown>  
                   </>

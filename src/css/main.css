@@ -244,6 +244,13 @@ p.parraf-carta:hover{
   overflow: scroll;
 }
 
+
+/*Tabla de reservas*/
+.td-data-reservation{
+  cursor: pointer;
+  color: red;
+}
+
 /*Reserva de mesas*/
 h3.form-reserva{
   font-weight: 600;
@@ -328,6 +335,8 @@ input, select{
   width: 98vh;
 }
 
+
+/*-aviso de boton de fallo del login*/
 .error-autentificacion{
   position: fixed;
   top: 60px;
