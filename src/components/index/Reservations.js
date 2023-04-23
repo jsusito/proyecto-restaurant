@@ -1,19 +1,23 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./authentication/UserSesion";
 import { Constants } from "../../utils/Constants";
+import { Alert } from "./mesages/Alert";
+import { ModalInfo } from "./mesages/ModalInfo";
 
 export function Reservations() {
   const context = useContext(UserContext);
   const [dataTable, setDataTable] = useState();
+  const [showAlert, setShowAlert] = useState(false);
   const [cursorState, setCursorState] = useState('auto');
-
+ 
   const APIS = new Constants();
   const API_RESERVATION = APIS.API_RESERVATION + context.nameSesion;
 
-  const cancelReservation = async (index, id) =>{
+  //Borra la fila de la tabla y de la base de datos
+  const cancelReservation = async (index, idReservation) =>{
     
     setCursorState('wait'); 
-    await fetch(APIS.API_RESERVATION + id, {
+    await fetch(APIS.API_RESERVATION + idReservation, {
       method:"DELETE",
       headers: {
         authorization: `Bearer ${context.token}`,
@@ -51,7 +55,11 @@ export function Reservations() {
         }));
         setDataTable(reservations);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error)
+        setShowAlert(true);
+        
+      });
   }, []);
 
   useEffect(() => {
@@ -69,7 +77,7 @@ export function Reservations() {
       </div>
       <div className="row">
         <div className="col">
-          <table className="tabla-reservas table table-hover">
+          <table className="tabla-reservas table table-hover mb-5">
             <thead className="table-dark">
               <tr>
                 <th>#</th>
@@ -85,7 +93,10 @@ export function Reservations() {
               {dataTable &&
                 dataTable.map((reservation, index) => (
                   <tr key={reservation.id} >
-                    <th scope="row" className="td-data-reservation" onClick={() => cancelReservation(index, reservation.id)}>{"X"}</th>
+                    <th scope="row">{<ModalInfo 
+                      title="Cancelación de reserva"
+                      bodyMsg="¿Estás seguro que quieres cancelar la reserva?"
+                      handleOnClick={() => cancelReservation(index, reservation.id)}/>}</th>
                     <td>{reservation.user}</td>
                     <td>{reservation.tel}</td>
                     <td>{reservation.dateReservations}</td>
@@ -98,6 +109,8 @@ export function Reservations() {
           </table>
         </div>
       </div>
+      {showAlert && <Alert msg="No se puedo cancelar la reserva" handleClick ={()=>setShowAlert(false)} />}
+      
     </div>
   );
 }

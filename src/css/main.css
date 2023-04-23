@@ -251,6 +251,21 @@ p.parraf-carta:hover{
   color: red;
 }
 
+/*Ventana de error*/
+.msg-alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 15%;
+  height: 15%;
+  border-radius: 10px;
+  text-align: center;
+  padding: 20px;
+  z-index: 9999;
+}
+
+
 /*Reserva de mesas*/
 h3.form-reserva{
   font-weight: 600;

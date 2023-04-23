@@ -28,7 +28,7 @@ const labelFor =[
             id:1,
             text: "apellido",
             type: "text",
-            placeholder:"Tiene que ser mayour de 3 letras",
+            placeholder:"Tiene que ser mayor de 3 letras",
             pattern : /^[a-zA-Z ]{3,}$/     
             
         },
@@ -101,7 +101,7 @@ export function FormReservas(){
         const form = useRef();
               
         //Manda el email y guardamos en base de datos la reserva. Verifica el formulario
-        const sendEmail = (e) => {
+        const sendReservation = (e) => {
             e.preventDefault();
                        
             const dataForm = {
@@ -150,10 +150,9 @@ export function FormReservas(){
                 });
             };
               
-            let notificationResolve =  Promise.all([saveData(), sendEmail()]);
-            notificationResolve
-                .then(response => response.forEach(status => console.log(status)))
-                .catch(error => console.error(error));
+            Promise.all([saveData(), sendEmail()])
+            .then(response => response.forEach(status => console.log(status)))
+            .catch(error => console.error(error));
         };  
           
         
@@ -214,7 +213,7 @@ export function FormReservas(){
         <div className="container">    
             <div className="row justify-content-center">    
                 <div className="col-auto">            
-                    <form className="g-3 needs-validation"  ref={form} onSubmit={sendEmail}>
+                    <form className="g-3 needs-validation"  ref={form} onSubmit={sendReservation}>
                         <div className="row  justify-content-center">
                             <div className="col-12">
                                 <h6 className="form-reserva text-center mt-2">Haz ahora</h6>
@@ -264,19 +263,15 @@ export function FormReservas(){
                             
                             
                             <div className="col-12  mx-2 mb-5 d-flex justify-content-center align-items-center">
-                            <button  type="submit" className="btn btn-warning w-25 my-3 mt-5" disabled={buttonDisable}>Ingresar</button>
+                                <button  type="submit" className="btn btn-warning w-25 my-3 mt-5" disabled={buttonDisable}>Ingresar</button>
                             </div>        
                         
-                        {reservaCompleta && <ConfirmSendForm textInfo={"Revise su email"} textConfirm={"Su reserva está confirmada"}/>}
+                        {reservaCompleta && <ConfirmSendForm textInfo={"Se ha procesado correctamente"} textConfirm={"Su reserva está confirmada"}/>}
                         {falloReserva && <FailSendForm/>}
                     </div>            
                 </form>
             </div>
         </div>
     </div>
-            
-
-                          
-        
-    );
+ );
 }

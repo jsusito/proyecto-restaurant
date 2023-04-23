@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { ErrorConnection } from "../components/index/ErrorConnection";
+import { ErrorConnection } from "../components/index/mesages/ErrorConnection";
 import { Especialidad } from "../components/index/Especialidad";
 import { SeccionEspecialidad } from "../components/index/SeccionEspecialidad";
 import { UserContext } from "../components/index/authentication/UserSesion";
