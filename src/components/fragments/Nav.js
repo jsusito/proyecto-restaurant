@@ -34,6 +34,7 @@ function Nav(props){
     setauthenticate(false);
     document.cookie = 'token="";max-age=-1;'
     document.cookie = 'user="";max-age=-1;'
+    document.cookie = 'authorities="";max-age=-1;'
   });
 
   //Se loguea con el servidor, registra las cookies y activa los elementos nuevos

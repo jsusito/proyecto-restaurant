@@ -14,7 +14,7 @@ const horaAlmuerzo=["12:00","12:30","13:00","13:30","14:00"]
 const horaCena=["19:00","20:00","21:00","22:00"]
 const optionPersonas=[1,2,3,4,5,6]
 const apiGetUser = new Constants().API_USER;
-
+const apiReservationGuest = new Constants().API_RESERVATION + "guest";
 const labelFor =[
         {
            id:0,
@@ -60,6 +60,7 @@ const labelFor =[
 
 export function FormReservas(){
         const [buttonDisable, setButtonDisable] = useState(true);
+        const [cursorBusy, setCursorBusy] = useState(false);
         
         //Contexto
         let context = useContext(UserContext);
@@ -101,7 +102,10 @@ export function FormReservas(){
         const form = useRef();
               
         //Manda el email y guardamos en base de datos la reserva. Verifica el formulario
-        const sendReservation = (e) => {
+        const sendReservation = async(e) => {
+            
+            setCursorBusy("wait")
+            
             e.preventDefault();
                        
             const dataForm = {
@@ -131,6 +135,34 @@ export function FormReservas(){
                   .catch(error => reject(error));
                 });
               };
+
+              //Usuarios que no están registrados
+              const saveDataGuest = () => {
+                
+                const bodyGuestReservation = {
+                "numberPeople": personas,
+                "lunchTable": mesa, 
+                "dinnerTable": mesa,
+                "lunchHour": almuerzo,
+                "dinnerHour": cena,
+                "username": nombre,
+                "surname" : apellido,
+                "telephone" : telefono,
+                "dateReservations": date
+                }
+
+                return new Promise((resolve, reject) => {
+                  fetch(apiReservationGuest,{
+                    method:"POST",
+                    headers:{
+                      'Content-type': 'application/json; charset=UTF-8'    
+                    },
+                    body: JSON.stringify(bodyGuestReservation)
+                  })
+                  .then(response => resolve(response.status))
+                  .catch(error => reject(error));
+                });
+              };  
               
             const sendEmail = () => {
                 
@@ -150,9 +182,18 @@ export function FormReservas(){
                 });
             };
               
-            Promise.all([saveData(), sendEmail()])
-            .then(response => response.forEach(status => console.log(status)))
-            .catch(error => console.error(error));
+            if(authenticate){
+                await Promise.all([saveData(), sendEmail()])
+                .then(response => response.forEach(status => console.log(status)))
+                .catch(error => console.error(error));
+            }
+            else{
+                await Promise.all([saveDataGuest(), sendEmail()])
+                .then(response => response.forEach(status => console.log(status)))
+                .catch(error => console.error(error));
+            }
+            setCursorBusy("auto");
+
         };  
           
         
@@ -190,7 +231,7 @@ export function FormReservas(){
              
         let apiUser = apiGetUser + username;
         
-        
+        //Si está el usuario autentificado rellena las casillas de los datos de la reserva
         useEffect(()=>{
           if(authenticate)  
             fetch(apiUser, {
@@ -205,8 +246,11 @@ export function FormReservas(){
                 setTelefono(body['telephone'])
             })
                
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        },[token])
+        },[])
+
+        useEffect(() => {
+            document.body.style.cursor = cursorBusy; 
+          }, [cursorBusy]);
         
         return(
         

@@ -3,6 +3,7 @@ import { UserContext } from "./authentication/UserSesion";
 import { Constants } from "../../utils/Constants";
 import { Alert } from "./mesages/Alert";
 import { ModalInfo } from "./mesages/ModalInfo";
+import { format } from "date-fns";
 
 export function Reservations() {
   const context = useContext(UserContext);
@@ -11,7 +12,24 @@ export function Reservations() {
   const [cursorState, setCursorState] = useState('auto');
  
   const APIS = new Constants();
-  const API_RESERVATION = APIS.API_RESERVATION + context.nameSesion;
+  const currentAuthoritis = context.authorities.current;
+
+  let API_RESERVATION;
+  
+  //Si autoridad es contable puede ver las reservas del día
+  if(currentAuthoritis.includes("CONTABLE")){
+    let date = new Date();
+    let day = date.getDate();
+    
+    let month = date.getMonth() + 1;
+    month = month.toString().padStart(2,'0');
+    
+    let year = date.getFullYear();
+    API_RESERVATION = APIS.API_RESERVATION + `date/${year}-${month}-${day}`;
+    console.info(API_RESERVATION);
+  }
+  else
+    API_RESERVATION = APIS.API_RESERVATION + context.nameSesion; 
 
   //Borra la fila de la tabla y de la base de datos
   const cancelReservation = async (index, idReservation) =>{
@@ -35,7 +53,7 @@ export function Reservations() {
      
   }
   
-  //Carga inicial de las reservas
+  //Carga inicial de las reservas según su usuario
   useEffect(() => {
     fetch(API_RESERVATION, {
       headers: {
@@ -93,13 +111,13 @@ export function Reservations() {
               {dataTable &&
                 dataTable.map((reservation, index) => (
                   <tr key={reservation.id} >
-                    <th scope="row">{<ModalInfo 
+                    <th scope="row">{!currentAuthoritis.includes("CONTABLE") && <ModalInfo 
                       title="Cancelación de reserva"
                       bodyMsg="¿Estás seguro que quieres cancelar la reserva?"
                       handleOnClick={() => cancelReservation(index, reservation.id)}/>}</th>
                     <td>{reservation.user}</td>
                     <td>{reservation.tel}</td>
-                    <td>{reservation.dateReservations}</td>
+                    <td>{ format(new Date(reservation.dateReservations),'dd-MM-yyyy') }</td>
                     <td>{reservation.dinnerTable}</td>
                     <td>{reservation.lunchHour}</td>
                     <td>{reservation.numberPeople}</td>
@@ -109,7 +127,7 @@ export function Reservations() {
           </table>
         </div>
       </div>
-      {showAlert && <Alert msg="No se puedo cancelar la reserva" handleClick ={()=>setShowAlert(false)} />}
+      {showAlert && <Alert msg="No hay conexión con el servidor. Vuelva a iniciar sesión" handleClick ={()=>setShowAlert(false)} />}
       
     </div>
   );

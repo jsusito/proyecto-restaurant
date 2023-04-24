@@ -45,7 +45,8 @@ const userData = {
       setToken(cookieMap.token);
       setNameSesion(cookieMap.user);
       setAuthenticate(true);
-            
+      userAuthorities.current = cookieMap.authorities;
+      
     }
   },[token])
   

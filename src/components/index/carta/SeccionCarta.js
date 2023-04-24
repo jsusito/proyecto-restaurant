@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 
 function SeccionCarta(props){
@@ -29,16 +30,16 @@ function SeccionCarta(props){
                 <div className="col-md-6 justify-content-center align-items-start  py-1 my-3">
                     <p className="parraf-tittle text-center">{props.tittle}</p>
                     {
-                        props.recetas.map(receta => {
+                        props.recetas.map( (receta) => {
                             return (
-                                <>
+                                <React.Fragment key={receta.id}>
                                     <p  
+                                        
                                         className="parraf-carta mb-4" 
                                         onClick={()=>{
                                             props.setValueState(receta.imagen);
                                             setIdShow(receta.id)
                                         }}
-                                        key={receta.id}
                                     >
                                         {receta.description}
                                     </p>
@@ -47,7 +48,7 @@ function SeccionCarta(props){
                                     {/* mostramos la imagen cuando la resolucion sea inferior a 600px  justo debajo del nombre de la receta*/}
 
                                     {   idShow===receta.id && window.innerWidth<768 &&
-                                        <div className="col-md-6 mb-3 justify-content-center align-items-center" key={receta.map}>
+                                        <div className="col-md-6 mb-3 justify-content-center align-items-center" >
                                         {
                                             // eslint-disable-next-line jsx-a11y/alt-text
                                             <a href={props.valueState}>
@@ -56,7 +57,7 @@ function SeccionCarta(props){
                                         }
                                         </div>
                                     }
-                                </>
+                                </React.Fragment>
                             )
 
                         })
