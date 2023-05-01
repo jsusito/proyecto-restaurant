@@ -15,4 +15,4 @@ export class Constants{
     API_RESERVATION = "http://localhost:8089/reservation/"
     TIME_EXPIRED_TOKEN = 60 * 10 // 10 minutos 
 
-}
+} 

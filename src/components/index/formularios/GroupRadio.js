@@ -19,7 +19,7 @@ export function GroupRadio({tittle, radios,valueState, setValueState, name}){
                         text={element}
                         name={name}
                         checked={valueState === element}
-                        onOptionChange={onOptionChange}/>
+                        onOptionChange={onOptionChange}/> 
                         
                         )
                     }

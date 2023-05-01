@@ -225,7 +225,7 @@ export function FormReservas(){
             
             if(count===7)
                 disable=false;    
-            setButtonDisable(disable);
+            setButtonDisable(disable); 
 
         },[nombre, apellido, telefono, personas, email, mesa, almuerzo, cena])
              

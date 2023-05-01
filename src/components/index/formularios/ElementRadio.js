@@ -15,5 +15,5 @@ export function ElementRadio({text, value, name, checked, onOptionChange}){
             {text}
             </label>
         </div>
-    );
+    ); 
 }
