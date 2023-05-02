@@ -11,17 +11,20 @@ export function ElementRadio({text, value, name, checked, onOptionChange, index,
     
     let isReservation = false;
     let color = "text-primary";
+    let border = {};
     
     if(existReservation.length > 0){
         isReservation = true;
         color = "text-warning"
+        border = {border:"none", backgroundColor:"#ffc107" }
     }    
     return (
    
         <div className="form-check form-check-inline ">
             <label className={color}>
             <input 
-                className="form-check-input input-options-reservas" 
+                className="form-check-input input-options-reservas"
+                style={border} 
                 type="radio" 
                 name={name} 
                 id={"radios" + index} 

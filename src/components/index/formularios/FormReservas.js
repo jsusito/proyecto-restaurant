@@ -302,7 +302,7 @@ export function FormReservas(){
                                     Reservado
                                 </div>
                                 <div className="d-flex align-items-center">
-                                    <div className="legend-sq bg-success me-2"></div>
+                                    <div className="legend-sq bg-primary me-2"></div>
                                     Libre
                                 </div>
                             </div>
