@@ -7,14 +7,13 @@ import { ConfirmSendForm } from "./ConfirmSendForm";
 import { FailSendForm } from "./FailSendForm";
 import { LabelInput } from "./LabelInput";
 import { SelectForm } from "./SelectForm";
+import { ReservationTable } from "./ReservationTable";
 
+const constants = new Constants();
+const optionPersonas= constants.PERSONS_BY_TABLE;
+const apiGetUser = constants.API_USER;
+const apiReservationGuest = constants.API_RESERVATION + "guest";
 
-const optionMesa=["1","2","3","4","5","6","7","8"];
-const horaAlmuerzo=["12:00","12:30","13:00","13:30","14:00"]
-const horaCena=["19:00","20:00","21:00","22:00"]
-const optionPersonas=[1,2,3,4,5,6]
-const apiGetUser = new Constants().API_USER;
-const apiReservationGuest = new Constants().API_RESERVATION + "guest";
 const labelFor =[
         {
            id:0,
@@ -93,10 +92,11 @@ export function FormReservas(){
         labelFor[4].setValue = setEmail;
         
         //select
-        const [mesa, setMesa] = useState("");
-        const [almuerzo, setAlmuerzo] = useState("");
-        const [cena, setCena] = useState("");
-        
+        const [mesa, setMesa] = useState();
+        const [hora, setHora] = useState();
+                
+        const [radioButtonMesa, setRadioButtonMesa] = useState("")
+
         const [reservaCompleta, setReservaCompleta] = useState(false);
         const [falloReserva, setFalloReserva] = useState(false);
         const form = useRef();
@@ -111,14 +111,12 @@ export function FormReservas(){
             const dataForm = {
                 "numberPeople": personas,
                 "lunchTable": mesa, 
-                "dinnerTable": mesa,
-                "lunchHour": almuerzo,
-                "dinnerHour": cena,
+                "lunchHour": hora,
                 "userUsername": nombre,
                 "dateReservations": date
             }
 
-            let apiReservation = new Constants().API + "reservation";
+            let apiReservation = constants.API + "reservation";
             
             const saveData = () => {
                 
@@ -138,17 +136,14 @@ export function FormReservas(){
 
               //Usuarios que no están registrados
               const saveDataGuest = () => {
-                
                 const bodyGuestReservation = {
-                "numberPeople": personas,
-                "lunchTable": mesa, 
-                "dinnerTable": mesa,
-                "lunchHour": almuerzo,
-                "dinnerHour": cena,
-                "username": nombre,
-                "surname" : apellido,
-                "telephone" : telefono,
-                "dateReservations": date
+                    "numberPeople": personas,
+                    "dinnerTable": mesa, 
+                    "lunchHour": hora,
+                    "username": nombre,
+                    "surname" : apellido,
+                    "telephone" : telefono,
+                    "dateReservations": date
                 }
 
                 return new Promise((resolve, reject) => {
@@ -167,7 +162,8 @@ export function FormReservas(){
             const sendEmail = () => {
                 
                 return new Promise((resolve, reject) => {
-                  emailJS.sendForm('service_t9kpq9j', 'template_cztccwg', form.current, 'UohhMdM_4_xf3jYXZ')
+                   emailJS.sendForm('service_t9kpq9j', 'template_cztccwg', form.current, 'UohhMdM_4_xf3jYXZ')
+                  //emailJS.sendForm('service_t9k29j', 'template_cztcc2g', form.current, 'UohhMd5_4_xf3jYXZ')
                     .then(response => {
                         setReservaCompleta(true);
                         setButtonDisable(true);
@@ -196,7 +192,12 @@ export function FormReservas(){
 
         };  
           
-        
+        //Se encarga de desconponer el valor que viene de la reserva de mesa de los radio button en la mesa y la hora.
+        //LLega en formato 120:00, siendo 1 el numero de mesa y el resto la hora, y se lo asignamos a las otras variables
+        useEffect(()=>{
+            setMesa(radioButtonMesa.charAt(0));
+            setHora(radioButtonMesa.substring(1,6))
+        },[radioButtonMesa]);
         //Valida el formulario sumamos uno por cada input que se cumple. Almuerzo y cena valen por dos 
         useEffect(()=>{
             let count = 1;
@@ -220,14 +221,14 @@ export function FormReservas(){
             if(personas && personas!=="0")
                 count++    
             
-            if( (almuerzo && almuerzo!=="0") || (cena && cena!=="0"))
+            if(hora)
                 count++;    
             
             if(count===7)
                 disable=false;    
-            setButtonDisable(disable); 
+            setButtonDisable(disable);
 
-        },[nombre, apellido, telefono, personas, email, mesa, almuerzo, cena])
+        },[nombre, apellido, telefono, personas, email, mesa, hora])
              
         let apiUser = apiGetUser + username;
         
@@ -258,7 +259,7 @@ export function FormReservas(){
             <div className="row justify-content-center">    
                 <div className="col-auto">            
                     <form className="g-3 needs-validation"  ref={form} onSubmit={sendReservation}>
-                        <div className="row  justify-content-center">
+                        <div className="row  justify-content-center form-reserva">
                             <div className="col-12">
                                 <h6 className="form-reserva text-center mt-2">Haz ahora</h6>
                             </div>
@@ -292,23 +293,32 @@ export function FormReservas(){
                                 <SelectForm tittle="Personas" setValueState={setPersonas} name={"personas"}
                                     options={optionPersonas}></SelectForm>
                             </div>
-                            <div className="col-md-4 mx-5 mb-5">
-                                <SelectForm tittle="Reservar mesa" setValueState={setMesa} name={"mesa"}
-                                    options={optionMesa}></SelectForm>
+                            <hr className="text-primary "/>
+                            
+                            <div className="col-sm-12 d-flex justify-content-start my-4">
+                            
+                                <div className="d-flex align-items-center  me-5">
+                                    <div className="legend-sq bg-warning me-2"></div>
+                                    Reservado
+                                </div>
+                                <div className="d-flex align-items-center">
+                                    <div className="legend-sq bg-success me-2"></div>
+                                    Libre
+                                </div>
                             </div>
-                            <div className="col-md-4 mx-5 mb-5">
-                                <SelectForm tittle="Hora almuerzo" setValueState={setAlmuerzo} name={"almuerzo"}
-                                    options={horaAlmuerzo}></SelectForm>
-                            </div>        
-                            <div className="col-md-4 mx-5 mb-1">
-                                <SelectForm tittle="Hora Cena" setValueState={setCena} name={"cena"}
-                                    options={horaCena}></SelectForm>
+
+                            <div className="col-12">
+                                <ReservationTable setValueState={setRadioButtonMesa} date={date}/>
                             </div>
                             
+                                        
                             
                             <div className="col-12  mx-2 mb-5 d-flex justify-content-center align-items-center">
-                                <button  type="submit" className="btn btn-warning w-25 my-3 mt-5" disabled={buttonDisable}>Ingresar</button>
-                            </div>        
+                                {!reservaCompleta &&
+                                    <button  type="submit" className="btn btn-warning w-25 my-3 mt-5" disabled={buttonDisable}>Ingresar</button>
+                                }
+                            </div> 
+                                   
                         
                         {reservaCompleta && <ConfirmSendForm textInfo={"Se ha procesado correctamente"} textConfirm={"Su reserva está confirmada"}/>}
                         {falloReserva && <FailSendForm/>}

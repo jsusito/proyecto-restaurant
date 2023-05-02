@@ -1,7 +1,7 @@
 
 import { GroupRadio } from "./GroupRadio";
 import { Constants } from "../../../utils/Constants";
-import { useEffect, useState } from "react"; 
+import { useEffect, useState } from "react";
 
 export function ReservationTable(props){
     
@@ -39,7 +39,7 @@ export function ReservationTable(props){
                             </div>
                         )
                     }
-
+                
                
             </div>
 

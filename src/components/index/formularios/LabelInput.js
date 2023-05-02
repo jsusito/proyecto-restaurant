@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function LabelInput(props, { labelSize = 3, sizeInput = 8 }) {
+export function LabelInput(props) {
     
     
     const [invalid, setInvalid] = useState(false);

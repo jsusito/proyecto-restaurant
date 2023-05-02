@@ -267,11 +267,19 @@ p.parraf-carta:hover{
 
 
 /*Reserva de mesas*/
+
+.legend-sq {
+  
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
 h3.form-reserva{
   font-weight: 600;
   color:#B37542
 
-} 
+}
 
 form{
   max-width: 1000px;
@@ -304,15 +312,16 @@ form{
   font-weight: 700;
 }
 
-label{
+label, legend{
   text-transform: capitalize;
 }
 
-input, select{
-  height: 45px;
+input:not(.input-options-reservas), select{
+  height: 35px;
   min-width: 250px;
   
 }
+
 
 .invalid {
   border-color: red;

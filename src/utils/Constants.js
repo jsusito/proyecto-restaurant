@@ -15,4 +15,9 @@ export class Constants{
     API_RESERVATION = "http://localhost:8089/reservation/"
     TIME_EXPIRED_TOKEN = 60 * 10 // 10 minutos 
 
-} 
+    //Horas disponibles para reservar
+    TOTAL_TABLES=["1","2","3","4","5","6","7","8"];
+    TIME_LUNCH=["12:00","12:30","13:00","13:30","14:00", "19:00","20:00","21:00","22:00"]
+    PERSONS_BY_TABLE= [1,2,3,4,5,6];
+
+}
