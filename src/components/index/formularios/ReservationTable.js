@@ -17,8 +17,7 @@ export function ReservationTable(props){
         fetch(API_RESERVATIONS_BY_DATE + props.date)
             .then( (response) => response.json())
             .then((body) => setListReservationByDate(body))
-            .then(()=>console.log(listReservationByDate))
-    },[props.date])
+        },[props.date])
 
     return(
         <div className="container-fluid">

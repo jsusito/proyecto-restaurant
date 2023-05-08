@@ -1,7 +1,8 @@
 import { SeccionEspecialidad } from "../components/index/SeccionEspecialidad";
-import { RecetaEspecial } from "../datos/RecetaEspecial"
+import { RecetaEspecial } from "../datos/RecetaEspecial";
 
 export function Especialidades(){
+    let recetas = RecetaEspecial();        
     return (
       <div className="container-fluid container-especialidades">  
         <div className="row">
@@ -14,7 +15,8 @@ export function Especialidades(){
                         </div>
                         
                         <div className="row justify-content-start" >
-                            {RecetaEspecial().map(receta =>( 
+                           
+                            {recetas.map(receta =>( 
                                     <SeccionEspecialidad key={receta.id}  plato={receta.description} imagen={receta.imagen}
                                     ingredientes ={receta.ingredientes}
                                 />

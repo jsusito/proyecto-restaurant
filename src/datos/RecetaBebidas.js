@@ -9,7 +9,9 @@ export function RecetaBebidas(){
                 id:"15",
                 description: "refresco",
                 precio: "2.50",
-                imagen: refresco
+                imagen: refresco,
+                tipo:[]
+
                  
             },
             {
@@ -17,19 +19,22 @@ export function RecetaBebidas(){
                 id:"16",
                 description: "vino",
                 precio: "3",
-                imagen: vino
+                imagen: vino,
+                tipo:[]
             },
             {
                 id:"17",
                 description: "zumos",
                 precio: "9",
-                imagen: zumos
+                imagen: zumos,
+                tipo:[]
             },
             {
                 id:"18",
                 description: "infusion o cafe",
                 precio: "12",
-                imagen: cafe
+                imagen: cafe,
+                tipo:[]
             },
         ]
     }

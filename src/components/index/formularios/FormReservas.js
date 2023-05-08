@@ -255,7 +255,7 @@ export function FormReservas(){
         
         return(
         
-        <div className="container">    
+        <div className="container form-reservation" >    
             <div className="row justify-content-center">    
                 <div className="col-auto">            
                     <form className="g-3 needs-validation"  ref={form} onSubmit={sendReservation}>

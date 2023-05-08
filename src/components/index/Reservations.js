@@ -5,22 +5,25 @@ import { Alert } from "./mesages/Alert";
 import { ModalInfo } from "./mesages/ModalInfo";
 import { format } from "date-fns";
 import { GetTomorrowDate } from "./GetTomorrowDate";
+import { LabelInput } from "./formularios/LabelInput";
 
 export function Reservations() {
+  
   const context = useContext(UserContext);
   const [dataTable, setDataTable] = useState();
   const [showAlert, setShowAlert] = useState(false);
   const [cursorState, setCursorState] = useState('auto');
- 
+  const [currentDate,setCurrentDate] = useState(GetTomorrowDate())
+  
   const APIS = new Constants();
   const currentAuthoritis = context.authorities.current;
 
   let API_RESERVATION;
   
   //Si autoridad es contable puede ver las reservas del día
+  
   if(currentAuthoritis.includes("CONTABLE")){
-    let currentDate = GetTomorrowDate();
-    API_RESERVATION = APIS.API_RESERVATION + `date/${currentDate}`;
+      API_RESERVATION = APIS.API_RESERVATION + `date/${currentDate}`;
   }
   else
     API_RESERVATION = APIS.API_RESERVATION + context.nameSesion; 
@@ -56,7 +59,7 @@ export function Reservations() {
     })
       .then((response) => response.json())
       .then((registers) => {
-        const reservations = registers.map((reserva) => ({
+          const reservations = registers.map((reserva) => ({
           id: reserva.id,
           user: reserva.userUsername,
           tel: reserva.userTelephone,
@@ -72,7 +75,7 @@ export function Reservations() {
         setShowAlert(true);
         
       });
-  }, []);
+  }, [currentDate]);
 
   useEffect(() => {
     document.body.style.cursor = cursorState; 
@@ -85,7 +88,17 @@ export function Reservations() {
       <div className="col-12 d-flex justify-content-center">
           <h3 className="display-6 pt-3 "> tus reservas </h3>
       </div>
-      
+      { currentAuthoritis.includes("CONTABLE") &&
+        <div className="col-md-3 mb-3  justify-content-start">
+          <LabelInput 
+              
+              type="date" 
+              currentValue={currentDate}
+              pattern={/[*]*/} 
+              onHandleChangue={setCurrentDate}
+          />
+        </div>
+      }
       </div>
       <div className="row">
         <div className="col">
