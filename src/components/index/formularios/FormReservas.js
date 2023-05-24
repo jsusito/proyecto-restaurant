@@ -100,7 +100,15 @@ export function FormReservas(){
         const [reservaCompleta, setReservaCompleta] = useState(false);
         const [falloReserva, setFalloReserva] = useState(false);
         const form = useRef();
-              
+        
+        //datos comunes para invitados y usuarios registrados
+        const dataForm = {
+            "numberPeople": personas,
+            "dinnerTable": mesa, 
+            "lunchHour": hora,
+            "dateReservations": date
+        }
+
         //Manda el email y guardamos en base de datos la reserva. Verifica el formulario
         const sendReservation = async(e) => {
             
@@ -108,14 +116,8 @@ export function FormReservas(){
             
             e.preventDefault();
                        
-            const dataForm = {
-                "numberPeople": personas,
-                "lunchTable": mesa, 
-                "lunchHour": hora,
-                "userUsername": nombre,
-                "dateReservations": date
-            }
-
+            dataForm.userUsername = nombre;
+            
             let apiReservation = constants.API + "reservation";
             
             const saveData = () => {
@@ -136,15 +138,10 @@ export function FormReservas(){
 
               //Usuarios que no están registrados
               const saveDataGuest = () => {
-                const bodyGuestReservation = {
-                    "numberPeople": personas,
-                    "dinnerTable": mesa, 
-                    "lunchHour": hora,
-                    "username": nombre,
-                    "surname" : apellido,
-                    "telephone" : telefono,
-                    "dateReservations": date
-                }
+               
+                dataForm.username = nombre;
+                dataForm.surname = apellido;
+                dataForm.telephone = telefono;
 
                 return new Promise((resolve, reject) => {
                   fetch(apiReservationGuest,{
@@ -152,7 +149,7 @@ export function FormReservas(){
                     headers:{
                       'Content-type': 'application/json; charset=UTF-8'    
                     },
-                    body: JSON.stringify(bodyGuestReservation)
+                    body: JSON.stringify(dataForm)
                   })
                   .then(response => resolve(response.status))
                   .catch(error => reject(error));

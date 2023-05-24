@@ -35,12 +35,13 @@ export class Token{
         .then(response => {
             this.statuscode = response.status;
             return response.json()})
+        
         .then(response => {
             document.cookie = `token=${response.token};max-age=${timeExpiredToken};samesite=strict`;
             document.cookie = `user=${this.user};max-age=${timeExpiredToken};samesite=strict`;
             this.token = response.token;
             this.loggedIn = true;
-            //return response.token;
+            
         })
         .then(() => this.#getAuthorities())
         .then(() => document.cookie = `authorities=${this.authorities};max-age=${timeExpiredToken};samesite=strict`)
@@ -49,7 +50,7 @@ export class Token{
         });
     }
 
-    //Pendiente de hacer la solicitud para recuperar las autoridades y guardarlas en el contexto, para enseñar solo una parte si es admin
+    //recuperar las autoridades y guardar en el contexto, para enseñar solo una parte si es admin
     #getAuthorities(){
          return fetch(this.apiUser + this.user, {
             headers:{

@@ -12,8 +12,8 @@ export function ElementRadio({text, value, name, checked, onOptionChange, index,
     let isReservation = false;
     let color = "text-primary";
     let border = {};
-    
     if(existReservation.length > 0){
+        
         isReservation = true;
         color = "text-warning"
         border = {border:"none", backgroundColor:"#ffc107" }

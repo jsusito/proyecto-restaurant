@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Countdown from "../index/CountDown";
 import { UserContext } from "../index/authentication/UserSesion";
 import { Token } from "../index/request/Token";
 import { NavDropDown } from "../nav/NavDropDown";
@@ -11,16 +12,29 @@ function Nav(props){
   const [cursorState, setCursorState] = useState('auto'); //se encarga cambiar el cursor a espera en login
   
   const  context = useContext(UserContext);
+  
   const [user, setUser] = [context.nameSesion, context.setNameSesion];
-  const [authenticate, setauthenticate] = [context.authenticate, context.setAuthenticate]
+  const [authenticate, setAuthenticate] = [context.authenticate, context.setAuthenticate]
   const [contextToken, setContextToken] = [context.token, context.setToken];
  
-  //Verifica si hay guardado algún token valido en el registro de las cookies.
+  const [startCountDown, setStartCountDown] = useState(context.timeSecurityExit);
+
+  //Verifica si hay guardado algún token valido en el registro de las cookies
   useEffect(()=>{
     if(contextToken && user){
-       setauthenticate(true);
+       setAuthenticate(true);
     }
   },[])
+
+  useEffect(()=>{
+    
+    if(context.timeSecurityExit){
+      setStartCountDown(true);
+    }
+    else
+    setStartCountDown(false);
+    
+  },[context.timeSecurityExit])
 
   //cambiar el puntero del ratón(ocupado) mientras se procesa la solicitud
   useEffect(() => {
@@ -31,7 +45,7 @@ function Nav(props){
   
   //Borra las cookies y desactiva la authenticaficacion 
   const deleteAuthenticate = (()=>{
-    setauthenticate(false);
+    setAuthenticate(false);
     document.cookie = 'token="";max-age=-1;'
     document.cookie = 'user="";max-age=-1;'
     document.cookie = 'authorities="";max-age=-1;'
@@ -47,7 +61,7 @@ function Nav(props){
     await requestToken.requestToken()
       .then((token) => {
         if (requestToken.loggedIn) {
-          setauthenticate(true);
+          setAuthenticate(true);
           setFailRequestAuthenticate(false)
           setContextToken(requestToken.token);
         
@@ -135,16 +149,23 @@ function Nav(props){
                 
                 { authenticate &&
                   <>
+                      
                       <NavDropDown title={user}>
                       
                         <Link className="nav-link active btn-logger" to="/reservas">Mis reservas</Link>
                         {
                           context.authorities.current.includes("ADMIN") &&  
-                          <a className="nav-link active btn-logger" href="#">Nuevo Usuario</a>
+                          <Link className="nav-link btn-logger" to={"new-user"}>Nuevo usuario</Link>
                         }
                         <a className="nav-link active btn-logger" href="#" onClick={deleteAuthenticate}>cerrar sesión</a>
                       
-                      </NavDropDown>  
+                      </NavDropDown>
+                      <li className="nav-link">
+                        
+                        <small className="text-danger">
+                          {startCountDown && <Countdown logout={setAuthenticate}/>}
+                        </small>
+                      </li>   
                   </>
               }
               </ul>

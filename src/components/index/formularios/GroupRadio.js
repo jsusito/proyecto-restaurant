@@ -11,7 +11,7 @@ export function GroupRadio({tittle, radios,valueState, setValueState, name,reser
     const onOptionChange = (event) => {
         setValueState( event.target.value );
     }
-
+    
         
     return (
         <fieldset className="row mb-3">

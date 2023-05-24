@@ -27,8 +27,7 @@ export function LabelInput(props) {
         <label htmlFor={props.value} className="form-label">
           {props.value}
         </label>
-        <input
-          className={"form-control " + classInvalid}
+        <input className={"form-control " + classInvalid}
           name={props.value}
           id={props.value}
           type={props.type}

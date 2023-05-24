@@ -12,13 +12,13 @@ export function ReservationTable(props){
     
     const API_RESERVATIONS_BY_DATE = new Constants().API_RESERVATION + "date/";
     const [listReservationByDate, setListReservationByDate] = useState([]);
-
+    
     useEffect(()=>{
         fetch(API_RESERVATIONS_BY_DATE + props.date)
             .then( (response) => response.json())
             .then((body) => setListReservationByDate(body))
         },[props.date])
-
+    
     return(
         <div className="container-fluid">
             <div className="row">
@@ -30,7 +30,6 @@ export function ReservationTable(props){
                                     tittle = {"mesa " + (state)}
                                     numberMesa = {state}
                                     radios = {radios}
-                                    //valueState={state}
                                     setValueState={props.setValueState}
                                     name="mesa"
                                     reservations={listReservationByDate}
