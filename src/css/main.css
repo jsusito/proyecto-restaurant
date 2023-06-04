@@ -11,7 +11,7 @@
 .btn-menu, .btn-logger{
     min-width: 50px;
     min-height: 30px;
-    font-size: 16px;
+    font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 1.3px;
     font-weight: 400;
@@ -118,7 +118,7 @@ background-color: #90bae0;
 }
 
 .little{
-  font-size: 20px;
+  font-size: 1.2rem;
 }
 
 .img-carrusel{
@@ -146,14 +146,14 @@ background-color: #90bae0;
   
   letter-spacing: 1.3px;
   font-weight: 600;
-  font-size: 25pt;
+  font-size: 1.5rem;
   text-transform: capitalize;
   font-family: 'Josefin Slab', Times, serif;
 }
 
 .header-Comida-llevar{
   cursor: pointer;
-  height:50px;
+  height:4rem;
   text-decoration: underline rgb(77, 79, 85);
 }
 
@@ -165,7 +165,7 @@ background-color: #90bae0;
 }
 
 .parraf-carta, .parraf-carta-llevar{
-  font-size: normal;
+  font-size: 1rem;
   font-weight: normal;
   text-transform: capitalize;
   
@@ -205,7 +205,7 @@ p.parraf-carta:hover{
 
 .titulo-especialidad{
   color:#643c1a;
-  font-size: 15pt;
+  font-size: 1.5rem;
   text-transform: capitalize;
   
 
@@ -286,10 +286,10 @@ form{
 }
 
 .btn-form-contact{
-  min-width: 50px;
+    min-width: 50px;
     min-height: 30px;
     font-family: 'Nunito', sans-serif;
-    font-size: 16px;
+    font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 1.3px;
     font-weight: 700;

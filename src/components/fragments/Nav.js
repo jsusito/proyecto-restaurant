@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Countdown from "../index/CountDown";
 import { UserContext } from "../index/authentication/UserSesion";
@@ -7,6 +7,7 @@ import { NavDropDown } from "../nav/NavDropDown";
 
 function Nav(props){
   
+  const linkNavRef = useRef();
   const [password, setPassword] = useState("");
   const [failRequestAuthenticate, setFailRequestAuthenticate] = useState(false);
   const [cursorState, setCursorState] = useState('auto'); //se encarga cambiar el cursor a espera en login
@@ -19,12 +20,25 @@ function Nav(props){
  
   const [startCountDown, setStartCountDown] = useState(context.timeSecurityExit);
 
+  const [hideNav, setHideNav] = useState(false);
+
+  useEffect(()=>{
+    if(hideNav){
+      linkNavRef.current.style.display = "none";
+    }
+    else
+     linkNavRef.current.style.display = "";
+  },[hideNav])
+  
+  
+  
   //Verifica si hay guardado algún token valido en el registro de las cookies
   useEffect(()=>{
     if(contextToken && user){
        setAuthenticate(true);
     }
   },[])
+
 
   useEffect(()=>{
     
@@ -36,6 +50,8 @@ function Nav(props){
     
   },[context.timeSecurityExit])
 
+  
+  
   //cambiar el puntero del ratón(ocupado) mientras se procesa la solicitud
   useEffect(() => {
     document.body.style.cursor = cursorState; 
@@ -43,13 +59,15 @@ function Nav(props){
 
   
   
-  //Borra las cookies y desactiva la authenticaficacion 
+  //Borra y desactiva la authenticaficacion 
   const deleteAuthenticate = (()=>{
     setAuthenticate(false);
     document.cookie = 'token="";max-age=-1;'
     document.cookie = 'user="";max-age=-1;'
     document.cookie = 'authorities="";max-age=-1;'
   });
+
+
 
   //Se loguea con el servidor, registra las cookies y activa los elementos nuevos
   const handleFormLogin = async(e) => {
@@ -62,8 +80,9 @@ function Nav(props){
       .then((token) => {
         if (requestToken.loggedIn) {
           setAuthenticate(true);
-          setFailRequestAuthenticate(false)
+          setFailRequestAuthenticate(false);
           setContextToken(requestToken.token);
+          
         
         } else {
           setFailRequestAuthenticate(true)
@@ -88,20 +107,28 @@ function Nav(props){
             <div className="navbar-brand col-3">
                 <Link className="nav-link active btn-menu" aria-current="page" to="/" style={{fontSize:20}}>Restaurante</Link>
             </div>
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07XL" aria-controls="navbarsExample07XL" aria-expanded="false" aria-label="Toggle navigation">
+            <button className="navbar-toggler" 
+              onClick ={()=>{
+                if(hideNav) setHideNav(false);
+                }}
+              type="button" data-bs-toggle="collapse" 
+              data-bs-target="#navbarsExample07XL" 
+              aria-controls="navbarsExample07XL" 
+              aria-expanded="false" 
+              aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>
       
-            <div className="collapse navbar-collapse" id="navbarsExample07XL">
+            <div className="collapse navbar-collapse" id="navbarsExample07XL" ref={linkNavRef}>
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <Link className="nav-link active btn-menu" to="carta">Carta</Link>
+                  <Link className="nav-link active btn-menu" to="carta" onClick={()=>setHideNav(true)}>Carta</Link>
                 </li>
                 <li className="nav-item">
-                <Link className="nav-link active btn-menu" to="especialidades">especialidades</Link>
+                <Link className="nav-link active btn-menu" to="especialidades" onClick={()=>setHideNav(true)}>especialidades</Link>
                 </li>
                 <li className="nav-item ">
-                <Link className="nav-link active btn-menu" to="grupo">Menu de grupo</Link>
+                <Link className="nav-link active btn-menu" to="grupo" onClick={()=>setHideNav(true)}>Menu de grupo</Link>
                 </li>
                 
                 { authenticate &&
@@ -111,8 +138,8 @@ function Nav(props){
                     </a>
                     <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li className="nav-item ">
-                          <Link className="nav-link active btn-menu" to="cargarRecetas">Cargar</Link>
-                          <Link className="nav-link active btn-menu" to="new-receta">Nueva Receta</Link>
+                          <Link className="nav-link active btn-menu" to="cargarRecetas" onClick={()=>setHideNav(true)}>Cargar</Link>
+                          <Link className="nav-link active btn-menu" to="new-receta" onClick={()=>setHideNav(true)}>Nueva Receta</Link>
                     </li>
                     </ul>
                   </li>
@@ -152,10 +179,10 @@ function Nav(props){
                       
                       <NavDropDown title={user}>
                       
-                        <Link className="nav-link active btn-logger" to="/reservas">Mis reservas</Link>
+                        <Link className="nav-link active btn-logger" to="/reservas" onClick={()=>setHideNav(true)}>Mis reservas</Link>
                         {
                           context.authorities.current.includes("ADMIN") &&  
-                          <Link className="nav-link btn-logger" to={"new-user"}>Nuevo usuario</Link>
+                          <Link className="nav-link btn-logger" to={"new-user"} onClick={()=>setHideNav(true)}>Nuevo usuario</Link>
                         }
                         <a className="nav-link active btn-logger" href="#" onClick={deleteAuthenticate}>cerrar sesión</a>
                       
@@ -170,7 +197,7 @@ function Nav(props){
               }
               </ul>
               
-              <Link className="nav-link btn-reserva" to={"reserva"}>reserva</Link>
+              <Link className="nav-link btn-reserva" to={"reserva"} onClick={()=>setHideNav(true)}>reserva</Link>
                
                {/* En caso de error en la autentificacion mostramos el mensaje*/}
                {failRequestAuthenticate &&
